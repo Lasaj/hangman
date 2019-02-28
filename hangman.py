@@ -14,42 +14,42 @@ class RandomWord():
 
 def hangman():
     # get a word
-    cwd = os.getcwd()
-    file_path = os.path.join(cwd, 'words.txt')
+    location = os.getcwd()
+    file_path = os.path.join(location, 'words.txt')
     get_word = RandomWord(file_path)
     word = get_word.random_word()
     original_word = word.copy()
 
-    # create the blank word to fill
-    blank = []
-    for i in range(len(word)):
-       blank.append('_')
+    # create the guessed_word word to fill
+    guessed_word = list('_' * len(word))
 
     # start the game
     guesses = 10
     while guesses > 0:
         print('You have', guesses, 'incorrect guesses left\n')
-        print(blank)
+        print(guessed_word)
         letter = input('Guess a letter: ')
-        if letter in word: # correct guess
-            # find all letters, take from word add to blank
-            while letter in word:
-                location = word.index(letter)
-                blank[location] = letter
-                word[location] = '_'
-        else: # incorrect guess
+        changed = False
+        # find all letters, take from word add to guessed_word
+        for i, c in enumerate(word):
+            print('i:', i, 'c', c)
+            if c == letter:
+                changed = True
+                guessed_word[i] = letter
+                word[i] = '_'
+        if not changed: # incorrect guess
             print("'", letter, "' is not in the word")
             guesses -= 1
 
         # win the game
-        if '_' not in blank:
+        if '_' not in guessed_word:
             print('')
-            print(blank)
+            print(guessed_word)
             print('Congratulations, you win!')
             break
 
     # lose the game
-    if '_' in blank:
+    if '_' in guessed_word:
         print('You lose')
         print('The word was:', original_word)
 
