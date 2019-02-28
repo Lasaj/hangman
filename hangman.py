@@ -32,7 +32,6 @@ def hangman():
         changed = False
         # find all letters, take from word add to guessed_word
         for i, c in enumerate(word):
-            print('i:', i, 'c', c)
             if c == letter:
                 changed = True
                 guessed_word[i] = letter
